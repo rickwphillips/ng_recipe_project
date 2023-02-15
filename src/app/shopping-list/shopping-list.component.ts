@@ -8,7 +8,7 @@ import { ShoppingListService } from "./shopping-list.service";
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
-  ingredients: Ingredient[] | undefined;
+  ingredients: Ingredient[] = [];
 
   constructor(private shoppingListSvc: ShoppingListService) {}
   ngOnInit() {
@@ -20,4 +20,5 @@ export class ShoppingListComponent implements OnInit {
   getIngredients() {
     this.ingredients = this.shoppingListSvc.getIngredients();
   }
+
 }
