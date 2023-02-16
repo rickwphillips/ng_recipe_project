@@ -37,4 +37,8 @@ export class RecipeService {
   getRecipes(): Recipe[] {
     return [...this.recipes];
   }
+
+  getRecipeById(id: number): Recipe | undefined {
+    return this.recipes.find(r => r.id === id);
+  }
 }
