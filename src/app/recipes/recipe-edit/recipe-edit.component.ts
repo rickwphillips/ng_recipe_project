@@ -25,7 +25,7 @@ export class RecipeEditComponent implements OnInit {
 
       this.recipe = this.recipeSvc.getRecipeById(this.id);
       this.editMode = this.recipe !== undefined;
-      console.log(this.editMode);
+      console.log("Edit Mode: ",this.editMode);
     })
 
   }
