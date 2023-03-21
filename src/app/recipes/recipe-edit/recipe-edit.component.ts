@@ -21,10 +21,13 @@ export class RecipeEditComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(( params: Params ) => {
       this.id = +params['id'];
-      if (!this.id) return;
+      if (!isNaN(this.id)) {
+        this.recipe = this.recipeSvc.getRecipeById(this.id);
+        this.editMode = this.recipe !== undefined;
+      } else {
+        this.editMode = false;
+      }
 
-      this.recipe = this.recipeSvc.getRecipeById(this.id);
-      this.editMode = this.recipe !== undefined;
       console.log("Edit Mode: ",this.editMode);
     })
 
