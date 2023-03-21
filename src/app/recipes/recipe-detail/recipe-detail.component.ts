@@ -13,17 +13,16 @@ export class RecipeDetailComponent implements OnInit{
   recipe: Recipe | undefined;
   id: number | undefined;
   constructor(
-    private shoppingListSvc: ShoppingListService,
     private recipeSvc: RecipeService,
     private route: ActivatedRoute,
     private router: Router
     ) {}
   ngOnInit() {
     const recipeId = +this.route.snapshot.params['id'];
-    this.setRecipe(this.recipeSvc.getRecipeById(recipeId));
+    this.setRecipe(this.recipeSvc.getRecipe(recipeId));
     this.route.params
       .subscribe( (params: Params) => {
-        this.setRecipe(this.recipeSvc.getRecipeById(+params['id']));
+        this.setRecipe(this.recipeSvc.getRecipe(+params['id']));
       })
 
   }
@@ -37,7 +36,7 @@ export class RecipeDetailComponent implements OnInit{
 
 
   addIngredientsToList() {
-    this.shoppingListSvc.addIngredients([...this.recipe!.ingredients])
+    this.recipeSvc.addIngredientsToShoppingList([...this.recipe!.ingredients])
   }
 
 }
