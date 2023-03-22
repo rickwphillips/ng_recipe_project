@@ -11,19 +11,18 @@ import { ActivatedRoute, Router } from "@angular/router";
 })
 export class RecipeListComponent implements OnInit, OnDestroy {
   recipes: Recipe[] | undefined;
-  subs: Subscription[] = [];
+  sub!: Subscription;
 
   constructor(private recipeSvc: RecipeService,
               private router: Router,
               private route: ActivatedRoute) {}
 
   ngOnInit() {
-    const sub = this.recipeSvc.recipesChanged
+    this.sub = this.recipeSvc.recipesChanged
       .subscribe(
         (recipes: Recipe[]) => {
           this.recipes = recipes;
       })
-    this.subs.push(sub);
     this.recipes = this.recipeSvc.getRecipes();
   }
 
@@ -32,7 +31,7 @@ export class RecipeListComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subs.forEach( s => s.unsubscribe());
+    this.sub.unsubscribe();
   }
 
 }

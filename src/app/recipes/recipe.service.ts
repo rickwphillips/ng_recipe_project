@@ -38,6 +38,7 @@ export class RecipeService {
   }
 
   getRecipes(): Recipe[] {
+    debugger
     return [...this.recipes];
   }
 
@@ -53,6 +54,7 @@ export class RecipeService {
     recipe.id = this.recipes.length + 1;
     this.recipes.push(recipe);
     this.recipesChanged.next([...this.recipes]);
+    return this.recipes.length;
   }
 
   updateRecipe( id: number, recipe: Recipe ) {

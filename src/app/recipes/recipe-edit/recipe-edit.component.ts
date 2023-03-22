@@ -87,7 +87,19 @@ export class RecipeEditComponent implements OnInit {
     if (this.editMode) {
       this.recipeSvc.updateRecipe(newRecipe.id, newRecipe);
     } else {
-      this.recipeSvc.addRecipe(newRecipe);
+      this.id = this.recipeSvc.addRecipe(newRecipe);
     }
+
+    this.router.navigate(['recipes', this.id]).then();
+  }
+
+  onCancel() {
+    const id = this.editMode ? this.id : '';
+    this.router.navigate(['recipes', id]).then();
+  }
+
+  onDeleteIngredient( index: number ) {
+    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+    this.recipeForm.markAsDirty()
   }
 }
