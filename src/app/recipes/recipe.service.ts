@@ -42,7 +42,7 @@ export class RecipeService {
   }
 
   getRecipe( id: number ): Recipe | undefined {
-    return this.recipes.find(r => r.id === id);
+    return this.recipes[--id];
   }
 
   addIngredientsToShoppingList( ingredients: Ingredient[] ) {
@@ -50,13 +50,13 @@ export class RecipeService {
   }
 
   addRecipe( recipe: Recipe ) {
-    recipe.id = this.recipes.length;
+    recipe.id = this.recipes.length + 1;
     this.recipes.push(recipe);
     this.recipesChanged.next([...this.recipes]);
   }
 
-  updateRecipe( index: number, recipe: Recipe ) {
-    this.recipes[index] = recipe;
+  updateRecipe( id: number, recipe: Recipe ) {
+    this.recipes[--id] = recipe;
     this.recipesChanged.next([...this.recipes]);
   }
 }
