@@ -1,13 +1,16 @@
 <div class="row">
   <div class="col-xs-12">
     <button class="btn btn-success" routerLink="new">New Recipe</button>
+    <input type="text" placeholder="Search recipes.." [(ngModel)]="searchString">
   </div>
 </div>
 <hr/>
 <div class="row">
   <div class="col-xs-12">
   <app-recipe-item
-    *ngFor="let recipeEl of recipes"
-    [recipe]="recipeEl" [index]="recipeEl.id" [routerLink]="recipeEl.id.toString()"></app-recipe-item>
+    *ngFor="let recipeEl of recipes! | filter:searchString:'name'"
+    [recipe]="recipeEl"
+    [index]="recipeEl.id"
+    [routerLink]="recipeEl.id.toString()"></app-recipe-item>
   </div>
 </div>

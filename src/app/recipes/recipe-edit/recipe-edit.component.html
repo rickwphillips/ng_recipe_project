@@ -87,6 +87,7 @@
               <button
                 class="btn btn-danger"
                 type="button"
+                *ngIf="controls.length"
                 (click)="onClearIngredients()">
                 Clear Ingredients
               </button>
