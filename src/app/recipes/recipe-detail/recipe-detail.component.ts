@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Recipe } from "../recipe.model";
-import { ShoppingListService } from "../../shopping-list/shopping-list.service";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { RecipeService } from "../recipe.service";
 
@@ -33,10 +32,15 @@ export class RecipeDetailComponent implements OnInit{
     return this.recipe = recipe;
   }
 
-
+  onDeleteRecipe( id: number ) {
+    if(window.confirm("Are you sure you want to delete this recipe?")) {
+      this.recipeSvc.deleteRecipe(id);
+      this.router.navigate(['recipes']).then();
+    }
+  }
 
   addIngredientsToList() {
-    this.recipeSvc.addIngredientsToShoppingList([...this.recipe!.ingredients])
+    this.recipeSvc.addIngredientsToShoppingList([...this.recipe!.ingredients]);
   }
 
 }
