@@ -12,5 +12,12 @@
         {{ ingredient.name }} - {{ ingredient.amount }} {{ ingredient.unit }}
       </a>
     </ul>
+    <button type="button"
+            class="btn btn-danger"
+            *ngIf="ingredients.length"
+            (click)="onClearShoppingList()">
+      Clear List
+    </button>
   </div>
+
 </div>

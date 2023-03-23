@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ingredient } from "src/app/shared/ingredient.model";
 import { ShoppingListService } from "./shopping-list.service";
-import { Subscription, windowWhen } from "rxjs";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-shopping-list',
@@ -27,5 +27,11 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
 
   onEditItem( index: number ) {
     this.shoppingListSvc.startedEditing.next(index);
+  }
+
+  onClearShoppingList() {
+    if (window.confirm("Are you sure?")) {
+      this.shoppingListSvc.clearShoppingList()
+    }
   }
 }

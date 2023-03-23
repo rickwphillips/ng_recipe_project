@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Recipe } from "../recipe.model";
 import { RecipeService } from "../recipe.service";
-import { FormArray, FormControl, FormGroup, NgForm, Validators } from "@angular/forms";
+import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
   selector: 'app-recipe-edit',
@@ -100,6 +100,13 @@ export class RecipeEditComponent implements OnInit {
 
   onDeleteIngredient( index: number ) {
     (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
-    this.recipeForm.markAsDirty()
+    this.recipeForm.markAsDirty();
+  }
+
+  onClearIngredients() {
+    if (window.confirm("Are you sure?")) {
+      (<FormArray>this.recipeForm.get('ingredients')).clear();
+      this.recipeForm.markAsDirty();
+    }
   }
 }
