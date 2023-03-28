@@ -6,6 +6,7 @@ import { RecipeDetailComponent } from "./recipes/recipe-detail/recipe-detail.com
 import { RecipeStartComponent } from "./recipes/recipe-start/recipe-start.component";
 import { RecipeEditComponent } from "./recipes/recipe-edit/recipe-edit.component";
 import { RecipesResolver } from "./recipes/recipes.resolver";
+import { AuthComponent } from "./auth/auth.component";
 
 const appRoutes: Route[] = [
   {
@@ -42,6 +43,10 @@ const appRoutes: Route[] = [
     path: 'shopping-list',
     component: ShoppingListComponent,
     children: []
+  },
+  {
+    path: 'auth',
+    component: AuthComponent
   }
 ]
 
