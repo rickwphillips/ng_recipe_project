@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { BehaviorSubject, catchError, Observable, throwError } from "rxjs";
 import { User } from "./user.model";
@@ -20,9 +20,10 @@ export interface AuthRespData {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnDestroy {
 
   user = new BehaviorSubject<User>(new User('', ''));
+  private tokenExpirationTimer: any;
 
   constructor(
     private http: HttpClient,
@@ -46,9 +47,42 @@ export class AuthService {
     );
   }
 
+  autoLogin() {
+    const userData = localStorage.getItem('userData');
+    if (!userData) return;
+
+    const parsedData: {
+      email: string,
+      id: string,
+      _token: string,
+      _tokenExpirationDate: string
+    } = JSON.parse(userData);
+
+    const loadedUser = new User(
+      parsedData.email,
+      parsedData.id,
+      parsedData._token,
+      new Date(parsedData._tokenExpirationDate)
+    );
+
+    if (!loadedUser.token) return;
+
+    this.user.next(loadedUser);
+    const expirationDuration = new Date(parsedData._tokenExpirationDate).getTime() -
+      new Date().getTime();
+    this.autoLogout(expirationDuration);
+
+  }
   logout() {
     this.user.next(new User('', ''));
+    localStorage.removeItem('userData');
+    if (this.tokenExpirationTimer) clearTimeout(this.tokenExpirationTimer);
     this.router.navigate(['/auth']).then();
+  }
+
+  autoLogout( duration: number ) {
+    if (this.tokenExpirationTimer) clearTimeout(this.tokenExpirationTimer);
+    this.tokenExpirationTimer = setTimeout( () => this.logout(), duration);
   }
 
   private handleError( errorRes: HttpErrorResponse ) {
@@ -77,5 +111,11 @@ export class AuthService {
     const expirationDate = new Date(new Date().getTime() + +resData.expiresIn * 1000);
     const user = new User(resData.email, resData.localId, resData.idToken, expirationDate);
     this.user.next(user);
+    this.autoLogout(+resData.expiresIn * 1000)
+    localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  ngOnDestroy() {
+    if (this.tokenExpirationTimer) clearTimeout(this.tokenExpirationTimer);
   }
 }
