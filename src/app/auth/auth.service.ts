@@ -100,6 +100,9 @@ export class AuthService implements OnDestroy {
       case 'EMAIL_NOT_FOUND':
         errorMessage = 'Invalid username/password combination';
         break;
+      case 'TOO_MANY_ATTEMPTS_TRY_LATER':
+        errorMessage = 'Too many invalid attempts. Try again later.';
+        break;
       default:
         // do nothing
     }
