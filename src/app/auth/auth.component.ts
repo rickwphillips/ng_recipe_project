@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { AuthRespData, AuthService } from "./auth.service";
 import { Observable, Subscription } from "rxjs";
@@ -12,7 +12,7 @@ import { PlaceholderDirective } from "../shared/placeholder.directive";
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnDestroy {
-  @ViewChild(PlaceholderDirective) alertHost: PlaceholderDirective | undefined;
+  @ViewChild(PlaceholderDirective) alertHost!: PlaceholderDirective;
   isLoginMode = true;
   isLoading = false;
   error: string | undefined;
@@ -20,8 +20,7 @@ export class AuthComponent implements OnDestroy {
 
   constructor(
     private authSvc: AuthService,
-    private router: Router,
-    private componentFactoryResolver: ComponentFactoryResolver) {
+    private router: Router ) {
   }
 
   ngOnDestroy(): void {
@@ -57,16 +56,13 @@ export class AuthComponent implements OnDestroy {
   }
 
   showErrorAlert( message: string ) {
-    const alertCmpFactory = this.componentFactoryResolver
-      .resolveComponentFactory(AlertComponent);
-
     const hostViewContainerRef = this.alertHost?.viewContainerRef;
-    hostViewContainerRef?.clear();
+    hostViewContainerRef.clear();
 
-    const componentRef = hostViewContainerRef?.createComponent(alertCmpFactory);
+    const componentRef = hostViewContainerRef?.createComponent(AlertComponent);
+    componentRef.instance.message = message;
 
-    componentRef!.instance.message = message;
-    this.closeSub = componentRef!.instance.close
+    this.closeSub = componentRef.instance.close
       .subscribe({
         next: () => {
           this.closeSub?.unsubscribe();

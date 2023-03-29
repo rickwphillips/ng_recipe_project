@@ -16,6 +16,7 @@ export class RecipeDetailComponent implements OnInit{
     private route: ActivatedRoute,
     private router: Router
     ) {}
+
   ngOnInit() {
     this.id = +this.route.snapshot.params['id'];
     this.setRecipe(this.recipeSvc.getRecipe(this.id));
@@ -24,7 +25,6 @@ export class RecipeDetailComponent implements OnInit{
         this.id = +params['id'];
         this.setRecipe(this.recipeSvc.getRecipe(this.id));
       })
-
   }
 
   setRecipe( recipe: Recipe | undefined ) {
