@@ -16,7 +16,9 @@ export class AuthGuard implements CanActivate {
     return this.authSvc.user.pipe(
       take(1),
       map( user => {
-      return !!user.token || this.router.createUrlTree(['/auth']);
+        if (!!user.token) return true;
+        if (route.url[0].path !== 'auth') return this.router.createUrlTree(['/auth']);
+        return false;
     }));
   }
   

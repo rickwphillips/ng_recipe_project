@@ -15,7 +15,6 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        pathMatch: 'full',
         component: RecipeStartComponent,
         resolve: [RecipesResolver]
       },
