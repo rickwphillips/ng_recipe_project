@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Recipe } from "../recipe.model";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { RecipeService } from "../recipe.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-recipe-detail',
   templateUrl: './recipe-detail.component.html',
   styleUrls: ['./recipe-detail.component.css']
 })
-export class RecipeDetailComponent implements OnInit{
+export class RecipeDetailComponent implements OnInit, OnDestroy{
   recipe: Recipe | undefined;
   id: number | undefined;
+  recipesChangedSub: Subscription | undefined;
   constructor(
     private recipeSvc: RecipeService,
     private route: ActivatedRoute,
@@ -25,6 +27,9 @@ export class RecipeDetailComponent implements OnInit{
         this.id = +params['id'];
         this.setRecipe(this.recipeSvc.getRecipe(this.id));
       })
+    this.recipesChangedSub = this.recipeSvc.recipesChanged.subscribe( () => {
+      this.setRecipe(this.recipeSvc.getRecipe(this.id!));
+    })
   }
 
   setRecipe( recipe: Recipe | undefined ) {
@@ -42,6 +47,10 @@ export class RecipeDetailComponent implements OnInit{
 
   addIngredientsToList() {
     this.recipeSvc.addIngredientsToShoppingList([...this.recipe!.ingredients]);
+  }
+
+  ngOnDestroy(): void {
+    this.recipesChangedSub?.unsubscribe();
   }
 
 }

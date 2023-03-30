@@ -68,8 +68,10 @@ export class AuthService implements OnDestroy {
     if (!loadedUser.token) return;
 
     this.user.next(loadedUser);
+
     const expirationDuration = new Date(parsedData._tokenExpirationDate).getTime() -
       new Date().getTime();
+
     this.autoLogout(expirationDuration);
 
   }

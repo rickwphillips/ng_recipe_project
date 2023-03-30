@@ -3,6 +3,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Recipe } from "../recipe.model";
 import { RecipeService } from "../recipe.service";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-recipe-edit',
@@ -14,6 +15,7 @@ export class RecipeEditComponent implements OnInit {
   recipe: Recipe | undefined;
   editMode = false;
   recipeForm!: FormGroup;
+  recipesChangedSub: Subscription | undefined;
 
   constructor( private router: Router,
                private route: ActivatedRoute,
@@ -34,6 +36,10 @@ export class RecipeEditComponent implements OnInit {
         this.editMode = false;
       }
       this.initForm();
+    })
+
+    this.recipesChangedSub = this.recipeSvc.recipesChanged.subscribe( () => {
+      this.router.navigate(['../'], {relativeTo: this.route}).then()
     })
 
   }
