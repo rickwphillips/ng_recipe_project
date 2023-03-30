@@ -49,7 +49,7 @@ export class AuthService implements OnDestroy {
 
   autoLogin() {
     const userData = localStorage.getItem('userData');
-    if (!userData) return;
+    if (!userData) return false;
 
     const parsedData: {
       email: string,
@@ -65,7 +65,7 @@ export class AuthService implements OnDestroy {
       new Date(parsedData._tokenExpirationDate)
     );
 
-    if (!loadedUser.token) return;
+    if (!loadedUser.token) return false;
 
     this.user.next(loadedUser);
 
@@ -73,6 +73,8 @@ export class AuthService implements OnDestroy {
       new Date().getTime();
 
     this.autoLogout(expirationDuration);
+
+    return true;
 
   }
   logout() {
@@ -118,6 +120,10 @@ export class AuthService implements OnDestroy {
     this.user.next(user);
     this.autoLogout(+resData.expiresIn * 1000)
     localStorage.setItem('userData', JSON.stringify(user));
+  }
+
+  navigateTo( url: string ) {
+    return this.router.navigate([url])
   }
 
   ngOnDestroy() {

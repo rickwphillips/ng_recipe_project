@@ -1,10 +1,10 @@
 {
-  "name": "ng-recipe",
-  "version": "0.0.0",
+  "name": "ricks-recipes",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --base-href=/projects/angular/RicksRecipes/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

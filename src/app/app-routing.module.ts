@@ -4,7 +4,7 @@ import { RouterModule, Routes } from "@angular/router";
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/recipes',
+    redirectTo: '/auth',
     pathMatch: 'full'
   },
   {
@@ -18,6 +18,11 @@ const routes: Routes = [
   {
     path: 'recipes',
     loadChildren: () => import('./recipes/recipes.module').then(mod => mod.RecipesModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/auth'
+
   }
 ]
 

@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   constructor( private authSvc: AuthService ) {}
 
   ngOnInit() {
-    this.authSvc.autoLogin();
+    if (this.authSvc.autoLogin()) this.authSvc.navigateTo('recipes').then();
   }
 
 
